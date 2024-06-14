@@ -24,28 +24,6 @@ The Team Project Planner is a tool designed to manage users, teams, and project 
   - List open boards for a team
   - Export board data to a text file
 
-## Directory Structure
-
-team_project_planner/
-├── base_classes/
-│ ├── project_board_base.py
-│ ├── team_base.py
-│ └── user_base.py
-├── concrete_implementation/
-│ ├── project_board_manager.py
-│ ├── team_manager.py
-│ └── user_manager.py
-├── db/
-│ ├── boards.json
-│ ├── teams.json
-│ └── users.json
-├── out/
-├── requirements.txt
-└── README.md
-
-bash
-Copy code
-
 ## Usage
 
 1. **Clone the repository**
@@ -53,50 +31,49 @@ Copy code
    ```bash
    git clone https://github.com/yourusername/team_project_planner.git
    cd team_project_planner
-Install dependencies
+'''code
 
-Make sure you have pip installed and run:
 
-bash
-Copy code
-pip install -r requirements.txt
-Run the application
+    from concrete_implementation.project_board_manager import ProjectBoardManager
+    import json
+    import datetime
 
-You can use the provided classes to create and manage users, teams, and project boards. Here is an example script to test the ProjectBoardManager:
+    pbm = ProjectBoardManager()
 
-python
-Copy code
-from concrete_implementation.project_board_manager import ProjectBoardManager
-import json
-import datetime
+    # Create a board
+    create_board_request = json.dumps({
+             "name": "Sprint 1",
+             "description": "First sprint board",
+             "team_id": 1,
+             "creation_time": datetime.datetime.now().isoformat()
+     })
+    print(pbm.create_board(create_board_request))
 
-pbm = ProjectBoardManager()
 
-# Create a board
-create_board_request = json.dumps({
-    "name": "Sprint 1",
-    "description": "First sprint board",
-    "team_id": 1,
-    "creation_time": datetime.datetime.now().isoformat()
-})
-print(pbm.create_board(create_board_request))
+'''code
 
-# Add a task to the board
-add_task_request = json.dumps({
-    "title": "Design database schema",
-    "description": "Design the initial database schema for the project",
-    "user_id": 1,
-    "board_id": 1,
-    "creation_time": datetime.datetime.now().isoformat()
-})
-print(pbm.add_task(add_task_request))
+     # Add a task to the board
+     add_task_request = json.dumps({
+         "title": "Design database schema",
+          "description": "Design the initial database schema for the project",
+          "user_id": 1,
+          "board_id": 1,
+          "creation_time": datetime.datetime.now().isoformat()
+           })
+      print(pbm.add_task(add_task_request))
 
-# Export the board to a text file
-export_board_request = json.dumps({
-    "id": 1
-})
-print(pbm.export_board(export_board_request))
-Persisting Data
+
+'''code 
+
+
+      # Export the board to a text file
+      export_board_request = json.dumps({
+          "id": 1
+           })
+      print(pbm.export_board(export_board_request))
+
+      
+**Persisting Data**
 
 The application uses JSON files for persistence. The db folder contains these files:
 
