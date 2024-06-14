@@ -1,82 +1,71 @@
-##Team Project Planner Tool
+# Team Project Planner
 
-##Overview
-The Team Project Planner Tool is a comprehensive solution for managing users, teams, and project boards with tasks. The tool provides a set of APIs for:
+## Overview
 
-Managing users
-Managing teams
-Managing project boards and tasks within those boards
-All data is persisted using local file storage.
+The Team Project Planner is a tool designed to manage users, teams, and project boards with tasks. It provides a set of APIs to handle the creation, updating, and management of these entities, and it uses local file storage for persistence.
 
-##Features
-#User Management
-Create users
-List all users
-Describe a specific user
-Update user information
-Retrieve teams associated with a user
-#Team Management
-Create teams
-List all teams
-Describe a specific team
-Update team information
-Add users to a team
-Remove users from a team
-List users in a team
-#Project Board Management
-Create project boards
-Close project boards
-Add tasks to project boards
-Update the status of tasks
-List all open boards for a team
-Export board details to a text file
+## Features
 
-##Project Structure
+- **User Management**
+  - Create, update, and list users
+  - Describe a user
+  - Get a user's teams
+
+- **Team Management**
+  - Create, update, and list teams
+  - Describe a team
+  - Add and remove users from a team
+  - List users of a team
+
+- **Project Board Management**
+  - Create and close project boards
+  - Add tasks to boards
+  - Update the status of tasks
+  - List open boards for a team
+  - Export board data to a text file
+
+## Directory Structure
+
 team_project_planner/
 ├── base_classes/
-│   ├── project_board_base.py
-│   ├── team_base.py
-│   └── user_base.py
+│ ├── project_board_base.py
+│ ├── team_base.py
+│ └── user_base.py
 ├── concrete_implementation/
-│   ├── project_board_manager.py
-│   ├── team_manager.py
-│   └── user_manager.py
+│ ├── project_board_manager.py
+│ ├── team_manager.py
+│ └── user_manager.py
 ├── db/
-│   ├── boards.json
-│   ├── teams.json
-│   └── users.json
+│ ├── boards.json
+│ ├── teams.json
+│ └── users.json
 ├── out/
 ├── requirements.txt
 └── README.md
-Getting Started
-Prerequisites
-Python 3.8 or higher
-Installation
-Clone the repository:
-git clone <repository_url>
-cd team_project_planner
-Install the required dependencies:
 
-pip install -r requirements.txt
-Ensure the database and output directories exist:
-
-mkdir -p db out
-touch db/boards.json db/teams.json db/users.json
-Initialize the JSON files:
-
-json
+bash
 Copy code
-echo "[]" > db/boards.json
-echo "[]" > db/teams.json
-echo "[]" > db/users.json
-##Usage
-To use the Team Project Planner Tool, create instances of UserManager, TeamManager, and ProjectBoardManager, and call their respective methods with appropriate JSON-formatted strings.
 
-Example
-Here's an example of how to use the ProjectBoardManager:
+## Usage
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/team_project_planner.git
+   cd team_project_planner
+Install dependencies
+
+Make sure you have pip installed and run:
+
+bash
+Copy code
+pip install -r requirements.txt
+Run the application
+
+You can use the provided classes to create and manage users, teams, and project boards. Here is an example script to test the ProjectBoardManager:
 
 python
-
+Copy code
 from concrete_implementation.project_board_manager import ProjectBoardManager
 import json
 import datetime
@@ -90,5 +79,29 @@ create_board_request = json.dumps({
     "team_id": 1,
     "creation_time": datetime.datetime.now().isoformat()
 })
-response = pbm.create_board(create_board_request)
-print(response)  # Output: {"id": 1}
+print(pbm.create_board(create_board_request))
+
+# Add a task to the board
+add_task_request = json.dumps({
+    "title": "Design database schema",
+    "description": "Design the initial database schema for the project",
+    "user_id": 1,
+    "board_id": 1,
+    "creation_time": datetime.datetime.now().isoformat()
+})
+print(pbm.add_task(add_task_request))
+
+# Export the board to a text file
+export_board_request = json.dumps({
+    "id": 1
+})
+print(pbm.export_board(export_board_request))
+Persisting Data
+
+The application uses JSON files for persistence. The db folder contains these files:
+
+users.json: Stores user data
+teams.json: Stores team data
+boards.json: Stores project board and task data
+Ensure that these files are present in the db directory. If not, you can create them with an empty JSON array ([]) as the content.
+
